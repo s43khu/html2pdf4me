@@ -1,7 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 const sharp = require("sharp");
-const fetch = require("node-fetch");
+// const fetch = require("node-fetch");
 
 class ImageProcessor {
   constructor(imageCacheDir, backendUrl, imageQuality, imageSize, imageStyle) {
