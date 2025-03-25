@@ -1,7 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 const sharp = require("sharp");
-// const fetch = require("node-fetch");
+const axios = require("axios");
 
 class ImageProcessor {
   constructor(imageCacheDir, backendUrl, imageQuality, imageSize, imageStyle) {
@@ -19,10 +19,8 @@ class ImageProcessor {
   async downloadAndCompressImage(imageUrl) {
     try {
       console.log(`Downloading: ${imageUrl}`);
-      const response = await fetch(imageUrl, { timeout: 10000 });
-      if (!response.ok) throw new Error(`Failed to fetch: ${imageUrl}`);
+      const response = await axios.get(imageUrl, { responseType: "arraybuffer", timeout: 10000 });
       
-      const buffer = await response.arrayBuffer();
       let fileName = `${Date.now()}-${path.basename(imageUrl)}`;
       let filePath = path.join(this.IMAGE_CACHE_DIR, fileName);
 
@@ -34,7 +32,7 @@ class ImageProcessor {
         counter++;
       }
 
-      await sharp(Buffer.from(buffer))
+      await sharp(Buffer.from(response.data))
         .resize(this.imageSize.width, this.imageSize.height, { fit: "cover" })
         .jpeg({ quality: this.imageQuality })
         .toFile(filePath);
