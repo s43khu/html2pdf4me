@@ -41,8 +41,8 @@ const fileName = "test_pdf";
 const folderName = "uploads";
 
 htmlToPdf.createPDF(htmlContent, fileName, folderName)
-  .then((pdfUrl) => {
-    console.log("PDF generated successfully at:", pdfUrl);
+  .then((pdfFile) => {
+    console.log("PDF generated successfully:", pdfFile);
   })
   .catch((error) => {
     console.error("Error generating PDF:", error);
