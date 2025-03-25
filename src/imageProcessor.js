@@ -18,6 +18,10 @@ class ImageProcessor {
 
   async downloadAndCompressImage(imageUrl) {
     try {
+      if (!/\.(jpg|jpeg|png|gif|webp)$/i.test(imageUrl)) {
+        console.warn(`Skipping non-image URL: ${imageUrl}`);
+        return null;
+      }
       console.log(`Downloading: ${imageUrl}`);
       const response = await axios.get(imageUrl, { responseType: "arraybuffer", timeout: 10000 });
       
