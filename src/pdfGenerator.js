@@ -33,7 +33,7 @@ class PdfGenerator {
       await browser.close();
 
       const pdfBuffer = fs.readFileSync(pdfPath);
-      return `${this.backendUrl}/${folderName}/${path.basename(pdfPath)}`;
+      return pdfPath;
     } catch (error) {
       throw new Error(`PDF generation failed: ${error.message}`);
     }
