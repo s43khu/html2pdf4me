@@ -1,0 +1,16 @@
+{
+  "name": "html-to-pdf-optimizer",
+  "version": "1.0.0",
+  "description": "A library to optimize images and generate PDFs from HTML content.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-fetch": "^3.3.2",
+    "puppeteer": "^24.4.0",
+    "sharp": "^0.33.5"
+  }
+}
