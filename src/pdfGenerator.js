@@ -23,7 +23,23 @@ class PdfGenerator {
       const page = await browser.newPage();
       await page.setDefaultNavigationTimeout(300000);
       await page.setContent(htmlContent, { waitUntil: "load" });
-      const pdfBuffer = await page.pdf(this.pdfOptions);
+
+      let pdfBuffer;
+      try {
+        pdfBuffer = await page.pdf(this.pdfOptions);
+      } catch (error) {
+        if (error.message.includes("ReadableStream is not defined")) {
+          console.warn("⚠️ ReadableStream not found. Applying fallback fix...");
+          if (!global.ReadableStream) {
+            const { Readable } = require("stream");
+            global.ReadableStream = Readable;
+          }
+          pdfBuffer = await page.pdf(this.pdfOptions); // Retry after fix
+        } else {
+          throw error;
+        }
+      }
+
       await browser.close();
       
       let name = `${Date.now()}-${fileName}.pdf`;
