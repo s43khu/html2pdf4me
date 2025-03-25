@@ -10,6 +10,10 @@ class PdfGenerator {
 
   async createPDF(htmlContent, fileName, folderName) {
     try {
+      if (!fs.existsSync(folderName)) {
+        fs.mkdirSync(folderName, { recursive: true });
+      }
+
       const browser = await puppeteer.launch({
         headless: "new",
         args: ["--disable-dev-shm-usage", "--no-sandbox"],
@@ -20,8 +24,17 @@ class PdfGenerator {
       const pdfBuffer = await page.pdf(this.pdfOptions);
       await browser.close();
       
-      const name = `${Date.now()}-${fileName}.pdf`;
-      const filePath = path.join(process.cwd(), folderName, name);
+      let name = `${Date.now()}-${fileName}.pdf`;
+      let filePath = path.join(process.cwd(), folderName, name);
+
+      // Ensure unique filename
+      let counter = 1;
+      while (fs.existsSync(filePath)) {
+        name = `${Date.now()}-${counter}-${fileName}.pdf`;
+        filePath = path.join(process.cwd(), folderName, name);
+        counter++;
+      }
+      
       fs.writeFileSync(filePath, pdfBuffer);
       
       return `${this.backendUrl}/${folderName}/${name}`;

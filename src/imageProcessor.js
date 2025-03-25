@@ -23,8 +23,16 @@ class ImageProcessor {
       if (!response.ok) throw new Error(`Failed to fetch: ${imageUrl}`);
       
       const buffer = await response.arrayBuffer();
-      const fileName = `${Date.now()}-${path.basename(imageUrl)}`;
-      const filePath = path.join(this.IMAGE_CACHE_DIR, fileName);
+      let fileName = `${Date.now()}-${path.basename(imageUrl)}`;
+      let filePath = path.join(this.IMAGE_CACHE_DIR, fileName);
+
+      // Ensure unique filename
+      let counter = 1;
+      while (fs.existsSync(filePath)) {
+        fileName = `${Date.now()}-${counter}-${path.basename(imageUrl)}`;
+        filePath = path.join(this.IMAGE_CACHE_DIR, fileName);
+        counter++;
+      }
 
       await sharp(Buffer.from(buffer))
         .resize(this.imageSize.width, this.imageSize.height, { fit: "cover" })

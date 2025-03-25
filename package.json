@@ -1,16 +1,16 @@
 {
-  "name": "html-to-pdf-optimizer",
+  "name": "html2pdf4me",
   "version": "1.0.0",
-  "description": "A library to optimize images and generate PDFs from HTML content.",
-  "main": "index.js",
+  "description": "A library to optimize images in HTML and generate PDFs using Puppeteer.",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test.js"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "node-fetch": "^3.3.2",
     "puppeteer": "^24.4.0",
     "sharp": "^0.33.5"
-  }
+  },
+  "author": "s43khu",
+  "license": "MIT"
 }

@@ -37,7 +37,9 @@ class createHTML2Pdf4me {
 
   async createPDF(htmlContent, fileName, folderName) {
     const optimizedHTML = await this.optimizeImagesInHTML(htmlContent);
-    return await this.pdfGenerator.createPDF(optimizedHTML, fileName, folderName);
+    const pdfPath = await this.pdfGenerator.createPDF(optimizedHTML, fileName, folderName);
+    this.imageProcessor.cleanupTempImages();
+    return pdfPath;
   }
 }
 
