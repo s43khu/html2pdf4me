@@ -1,6 +1,6 @@
 {
   "name": "html2pdf4me",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A library to optimize images in HTML and generate PDFs using Puppeteer.",
   "main": "src/index.js",
   "scripts": {
