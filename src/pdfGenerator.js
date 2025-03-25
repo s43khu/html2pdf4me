@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 
 if (typeof ReadableStream === "undefined") {
-  global.ReadableStream = require("web-streams-polyfill/ponyfill").ReadableStream;
+  global.ReadableStream = require("web-streams-polyfill").ReadableStream;
 }
 
 class PdfGenerator {
