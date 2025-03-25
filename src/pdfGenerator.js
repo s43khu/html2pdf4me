@@ -3,9 +3,10 @@ const fs = require("fs");
 const path = require("path");
 
 class PdfGenerator {
-  constructor(pdfOptions, backendUrl) {
+  constructor(pdfOptions, backendUrl, executablePath) {
     this.pdfOptions = pdfOptions;
     this.backendUrl = backendUrl;
+    this.executablePath = executablePath;
   }
 
   async createPDF(htmlContent, fileName, folderName) {
@@ -17,6 +18,7 @@ class PdfGenerator {
       const browser = await puppeteer.launch({
         headless: "new",
         args: ["--disable-dev-shm-usage", "--no-sandbox"],
+        executablePath: this.executablePath || undefined,
       });
       const page = await browser.newPage();
       await page.setDefaultNavigationTimeout(300000);

@@ -16,8 +16,9 @@ class createHTML2Pdf4me {
     this.imageQuality = options.imageQuality || 50;
     this.imageSize = options.imageSize || { width: 500, height: 500 };
     this.imageStyle = options.imageStyle || 'object-fit: cover;';
+    this.executablePath = options.executablePath || null;
     this.imageProcessor = new ImageProcessor(this.IMAGE_CACHE_DIR, this.BACKEND_URL, this.imageQuality, this.imageSize, this.imageStyle);
-    this.pdfGenerator = new PdfGenerator(this.defaultPDFOptions, this.BACKEND_URL);
+    this.pdfGenerator = new PdfGenerator(this.defaultPDFOptions, this.BACKEND_URL, this.executablePath);
   }
 
   async optimizeImagesInHTML(htmlContent) {
