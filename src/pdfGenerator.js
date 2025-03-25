@@ -2,6 +2,10 @@ const puppeteer = require("puppeteer");
 const fs = require("fs");
 const path = require("path");
 
+if (typeof ReadableStream === "undefined") {
+  global.ReadableStream = require("web-streams-polyfill/ponyfill").ReadableStream;
+}
+
 class PdfGenerator {
   constructor(pdfOptions, backendUrl, executablePath) {
     this.pdfOptions = pdfOptions;
@@ -24,41 +28,16 @@ class PdfGenerator {
       await page.setDefaultNavigationTimeout(300000);
       await page.setContent(htmlContent, { waitUntil: "load" });
 
-      let pdfBuffer;
-      try {
-        pdfBuffer = await page.pdf(this.pdfOptions);
-      } catch (error) {
-        if (error.message.includes("ReadableStream is not defined")) {
-          console.warn("⚠️ ReadableStream not found. Applying fallback fix...");
-          if (!global.ReadableStream) {
-            const { Readable } = require("stream");
-            global.ReadableStream = Readable;
-          }
-          pdfBuffer = await page.pdf(this.pdfOptions); // Retry after fix
-        } else {
-          throw error;
-        }
-      }
-
+      const pdfPath = path.join(process.cwd(), folderName, `${Date.now()}-${fileName}.pdf`);
+      await page.pdf({ path: pdfPath, ...this.pdfOptions });
       await browser.close();
-      
-      let name = `${Date.now()}-${fileName}.pdf`;
-      let filePath = path.join(process.cwd(), folderName, name);
 
-      // Ensure unique filename
-      let counter = 1;
-      while (fs.existsSync(filePath)) {
-        name = `${Date.now()}-${counter}-${fileName}.pdf`;
-        filePath = path.join(process.cwd(), folderName, name);
-        counter++;
-      }
-      
-      fs.writeFileSync(filePath, pdfBuffer);
-      
-      return `${this.backendUrl}/${folderName}/${name}`;
+      const pdfBuffer = fs.readFileSync(pdfPath);
+      return `${this.backendUrl}/${folderName}/${path.basename(pdfPath)}`;
     } catch (error) {
       throw new Error(`PDF generation failed: ${error.message}`);
     }
+
   }
 }
 
