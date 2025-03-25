@@ -28,12 +28,12 @@ class PdfGenerator {
       await page.setDefaultNavigationTimeout(300000);
       await page.setContent(htmlContent, { waitUntil: "load" });
 
-      const pdfPath = path.join(process.cwd(), folderName, `${Date.now()}-${fileName}.pdf`);
+      const pdfFile = path.join(process.cwd(), folderName, `${Date.now()}-${fileName}.pdf`);
       await page.pdf({ path: pdfPath, ...this.pdfOptions });
       await browser.close();
 
       const pdfBuffer = fs.readFileSync(pdfPath);
-      return pdfPath;
+      return pdfFile;
     } catch (error) {
       throw new Error(`PDF generation failed: ${error.message}`);
     }
