@@ -58,6 +58,10 @@ htmlToPdf.createPDF(htmlContent, fileName, folderName)
 | `pdfOptions`    | Object   | `{ format: "A4", printBackground: true, margin: { top: "10mm", bottom: "10mm", left: "10mm", right: "10mm" }, scale: 0.9 }` | PDF configuration options for Puppeteer. |
 | `executablePath` | String   | `null` (default Puppeteer Chromium) | Path to Puppeteer's Chromium executable. |
 
+## Repository
+The source code for HTML2PDF4ME is available on GitHub:  
+[GitHub Repository](https://github.com/s43khu/html2pdf4me)
+
 ## License
 This project is licensed under the MIT License.
 
